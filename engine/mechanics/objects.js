@@ -322,28 +322,9 @@ let objects = [
 
 export default objects.map(clean());
 
-function clean(keyPrefix = '') {
+function clean(prefix = '') {
 	return (object) => {
-		object.key = keyPrefix + slugify(object.name);
-		
-		object.orbital.semiminor = object.orbital.semimajor * Math.sqrt(1 - Math.pow(object.orbital.eccentricity, 2));
-		
-		var distance = Math.sqrt(Math.pow(object.orbital.semimajor, 2) - Math.pow(object.orbital.semiminor, 2));
-		object.orbital.focus1 = object.orbital.focus1 || [ 0, 0 ];
-		object.orbital.focus2 = object.orbital.focus2 || [
-			object.orbital.focus1[0] + distance * Math.sin(0),
-			object.orbital.focus1[1] + distance * Math.cos(0),
-		];
-		
-		object.orbital.center = [
-			(object.orbital.focus1[0] + object.orbital.focus2[0]) / 2,
-			(object.orbital.focus1[1] + object.orbital.focus2[1]) / 2,
-		];
-		
-		object.orbital.rotation = Math.atan2(
-			object.orbital.focus2[0] - object.orbital.focus1[0],
-			object.orbital.focus2[1] - object.orbital.focus1[1],
-		);
+		object.key = prefix + slugify(object.name);
 		
 		if (object.moons) {
 			object.moons = object.moons.map(clean(object.key + '_'));

@@ -1,5 +1,8 @@
 // ported and modified from http://www.stargazing.net/kepler/ellipse.html
 
+const degrees = Math.PI / 180;
+const rotate = -45 * degrees;
+
 module.exports = (object, date) => {
 	var period = object.period; // orbital period (d)
 	var anomaly = object.anomaly; // mean anomaly
@@ -15,6 +18,8 @@ module.exports = (object, date) => {
 	var rotation = 2 * Math.PI * delta / period + anomaly;
 	var azimuth = calculateAnomoly(rotation, eccentricity, 12);
 	var radius = semimajor * (1 - eccentricity * eccentricity) / (1 + eccentricity * Math.cos(azimuth));
+	
+	azimuth += rotate;
 	
 	var x = radius * (Math.cos(ascending) * Math.cos(azimuth + argument) - Math.sin(ascending) * Math.sin(azimuth + argument) * Math.cos(inclination));
 	var y = radius * (Math.sin(ascending) * Math.cos(azimuth + argument) + Math.cos(ascending) * Math.sin(azimuth + argument) * Math.cos(inclination));
