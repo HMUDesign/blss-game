@@ -3,6 +3,7 @@ import KoaRouter from 'koa-router';
 import koaServeStatic from 'koa-serve-static';
 
 import logger from './lib/logger';
+import engine from './engine';
 
 const app = new Koa();
 
@@ -20,4 +21,5 @@ app.use(koaServeStatic('public', {
 	fallthrough: false,
 }));
 
-export default app.listen(3000);
+const server = app.listen(3000);
+engine(server);
