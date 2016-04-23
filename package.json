@@ -1,0 +1,18 @@
+{
+  "name": "biggest-little-solar-system",
+  "version": "1.0.0",
+  "description": "Biggest Little Solar System - The Game",
+  "main": "index.js",
+  "author": "Christopher Baker <christopher@hmudesign.com>",
+  "dependencies": {
+    "babel-core": "^6.7.7",
+    "babel-preset-es2015-node5": "^1.2.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.7.2",
+    "debug": "^2.2.0",
+    "koa": "^2.0.0",
+    "koa-router": "^7.0.1",
+    "koa-serve-static": "^1.0.0",
+    "socket.io": "^1.4.5"
+  }
+}
