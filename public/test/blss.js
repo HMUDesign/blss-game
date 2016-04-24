@@ -221,11 +221,13 @@ var zoom = 25;
 				$(this).data('blss', data);
 				
 				$(this).on('click', function(event) {
+					event.preventDefault();
 					return data._onClick({ x: event.offsetX, y: event.offsetY });
 				});
 				
-				$(this).bind('mousewheel', function(e) {
-					return data._onScroll(e.originalEvent.wheelDelta < 0);
+				$(this).bind('mousewheel', function(event) {
+					event.preventDefault();
+					return data._onScroll(event.originalEvent.wheelDelta < 0);
 				});
 			}
 			
