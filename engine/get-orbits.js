@@ -9,7 +9,7 @@ let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) =>
 	
 	let segments = Math.pow(2, 5);
 	
-	for (let i = 0; i <= segments; i++) {
+	for (let i = 0; i < segments; i++) {
 		date = new Date(date.getTime() + (orbital.period / segments) * 86400000);
 		
 		let cartesian = mechanics(orbital, date);

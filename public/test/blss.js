@@ -128,8 +128,8 @@ var zoom = 25;
 		}
 		
 		var scale = getScales(this._objects);
-		scale.x.offset = this._objects.sun.latitude;
-		scale.y.offset = this._objects.sun.longitude;
+		scale.x.offset = this._objects.sun.geographic.latitude;
+		scale.y.offset = this._objects.sun.geographic.longitude;
 		
 		var width  = this._context.canvas.width;
 		var height = this._context.canvas.height;
@@ -143,8 +143,8 @@ var zoom = 25;
 					size /= 2;
 				}
 				
-				var x = scale.x.scale(object.latitude, zoom) * width;
-				var y = scale.y.scale(object.longitude, zoom) * height;
+				var x = scale.x.scale(object.geographic.latitude, zoom) * width;
+				var y = scale.y.scale(object.geographic.longitude, zoom) * height;
 				
 				if (Math.sqrt(Math.pow(x - coords.x, 2) + Math.pow(y - coords.y, 2)) < size) {
 					return key;
