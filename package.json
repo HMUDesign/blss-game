@@ -4,6 +4,10 @@
   "description": "Biggest Little Solar System - The Game",
   "main": "index.js",
   "author": "Christopher Baker <christopher@hmudesign.com>",
+  "engines": {
+    "node": "5.11.0",
+    "npm": "3.5.2"
+  },
   "dependencies": {
     "babel-core": "^6.7.7",
     "babel-preset-es2015-node5": "^1.2.0",
