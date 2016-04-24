@@ -1,10 +1,6 @@
-// var x = R * cos(lat) * cos(lon);
-// var y = R * cos(lat) * sin(lon);
-// var z = R * sin(lat);
-
 /* globals jQuery */
 
-var zoom = 1;
+var zoom = 25;
 
 (function($) {
 	var createColor = function(ratio) {
@@ -27,7 +23,7 @@ var zoom = 1;
 	}
 	
 	BLSS.prototype.setOrbit = function(key, orbit) {
-		// console.log('setOrbit', key, orbit);
+		this._orbits[key] = orbit;
 		
 		return this;
 	};
@@ -39,18 +35,50 @@ var zoom = 1;
 	};
 	
 	BLSS.prototype.draw = function() {
-		var getColor = createColor();
+		if (!Object.keys(this._objects).length) {
+			return null;
+		}
 		
 		var scale = getScales(this._objects);
-		scale.x.offset = this._objects.sun.latitude;
-		scale.y.offset = this._objects.sun.longitude;
+		scale.x.offset = this._objects.sun.geographic.latitude;
+		scale.y.offset = this._objects.sun.geographic.longitude;
 		
 		var width  = this._context.canvas.width;
 		var height = this._context.canvas.height;
 		
 		this._context.clearRect(0, 0, width, height);
 		
+		var getColor = createColor();
 		Object.keys(this._objects).map(function(key) {
+			var color = getColor();
+			if (!this._orbits[key]) {
+				return;
+			}
+			
+			var orbit = this._orbits[key].orbit;
+			
+			this._context.strokeStyle = color;
+			this._context.beginPath();
+			
+			orbit.map(function(spot, index) {
+				var x = scale.x.scale(spot.geographic.latitude, zoom) * width;
+				var y = scale.y.scale(spot.geographic.longitude, zoom) * height;
+				
+				if (index === 0) {
+					this._context.moveTo(x, y);
+				}
+				else {
+					this._context.lineTo(x, y);
+				}
+			}.bind(this));
+			
+			this._context.closePath();
+			this._context.stroke();
+		}.bind(this));
+		
+		var getColor = createColor();
+		Object.keys(this._objects).map(function(key) {
+			var color = getColor();
 			var object = this._objects[key];
 			
 			var size = 30;
@@ -58,10 +86,10 @@ var zoom = 1;
 				size /= 2;
 			}
 			
-			var x = scale.x.scale(object.latitude, zoom) * width;
-			var y = scale.y.scale(object.longitude, zoom) * height;
+			var x = scale.x.scale(object.geographic.latitude, zoom) * width;
+			var y = scale.y.scale(object.geographic.longitude, zoom) * height;
 			
-			this._context.fillStyle = getColor();
+			this._context.fillStyle = color;
 			this._context.beginPath();
 			this._context.arc(x, y, size, 0, 2 * Math.PI);
 			this._context.closePath();
@@ -74,7 +102,7 @@ var zoom = 1;
 			
 			this._context.fillStyle = 'black';
 			this._context.font = '16px sans-serif';
-			this._context.fillText(key, x, y);
+			this._context.fillText(object.name, x, y);
 		}.bind(this));
 		
 		return this;
@@ -129,13 +157,24 @@ var zoom = 1;
 		return this.draw();
 	};
 	
+	BLSS.prototype._onScroll = function(out) {
+		if (out) {
+			zoom /= 1.1;
+		}
+		else {
+			zoom *= 1.1;
+		}
+		
+		return this.draw();
+	};
+	
 	function getScales(objects) {
 		var xs = Object.keys(objects).map(function(key) {
-			return objects[key].latitude;
+			return objects[key].geographic.latitude;
 		}, this);
 		
 		var ys = Object.keys(objects).map(function(key) {
-			return objects[key].longitude;
+			return objects[key].geographic.longitude;
 		}, this);
 		
 		var x = getScale(xs);
@@ -180,8 +219,13 @@ var zoom = 1;
 				data = new BLSS(this);
 				
 				$(this).data('blss', data);
+				
 				$(this).on('click', function(event) {
 					return data._onClick({ x: event.offsetX, y: event.offsetY });
+				});
+				
+				$(this).bind('mousewheel', function(e) {
+					return data._onScroll(e.originalEvent.wheelDelta < 0);
 				});
 			}
 			

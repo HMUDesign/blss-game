@@ -4,19 +4,18 @@ import mechanics from './mechanics';
 import state from './state';
 
 let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) => {
-	let position = mechanics(orbital, date);
-	position.x += parent.x;
-	position.y += parent.y;
-	position.z += parent.z;
+	let cartesian = mechanics(orbital, date);
+	cartesian.x += parent.x;
+	cartesian.y += parent.y;
+	cartesian.z += parent.z;
 	
-	let { latitude, longitude } = center.add(position.x, position.y).toObject();
+	let geographic = center.add(cartesian.x, cartesian.y).toObject();
 	
 	return {
-		name,
 		key,
-		latitude,
-		longitude,
-		position,
+		name,
+		geographic,
+		cartesian,
 		state: state.get(key),
 	};
 };
@@ -28,7 +27,7 @@ let reduce = (date, objects, parent) => {
 		if (object.moons) {
 			return list
 				.concat(result)
-				.concat(reduce(date, object.moons, result.position))
+				.concat(reduce(date, object.moons, result.cartesian))
 			;
 		}
 		
@@ -38,15 +37,13 @@ let reduce = (date, objects, parent) => {
 
 export default () => {
 	const date = new Date();
+	
 	return [ {
 		key: 'sun',
 		name: 'Sun',
-		latitude: center.toObject().latitude,
-		longitude: center.toObject().longitude,
+		geographic: center.toObject(),
+		cartesian: { x: 0, y: 0, z: 0 },
 	} ]
 		.concat(reduce(date, objects))
-		.map((object) => {
-			return object;
-		})
 	;
 };
