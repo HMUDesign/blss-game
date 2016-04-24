@@ -54,9 +54,11 @@ function attack(player, location, key) {
 		return 'not yours';
 	}
 	
+	/*
 	if (!isRange(key, location)) {
-		// return 'not in range';
+		return 'not in range';
 	}
+	*/
 	
 	state[key].health -= 1;
 	state[key].health = Math.max(0, state[key].health);
@@ -77,9 +79,11 @@ function reinforce(player, location, key) {
 		return 'not yours';
 	}
 	
+	/*
 	if (!isRange(key, location)) {
-		// return 'not in range';
+		return 'not in range';
 	}
+	*/
 	
 	if (!state[key].owner) {
 		state[key].owner = player.id;
