@@ -1,4 +1,4 @@
-const degrees = Math.PI / 180;
+import { degrees } from './config.js';
 
 let objects = [
 	{
@@ -203,6 +203,24 @@ let objects = [
 			flattening: 0.09796,
 			radius: 58232000,
 		},
+		moons: [
+			{
+				name: 'Titan',
+				orbital: {
+					semimajor: 1221870000,
+					eccentricity: 0.0288,
+					period: 15.945,
+					anomaly: 0 * degrees, // unavailable
+					inclination: 0.34854 * degrees,
+					ascending: 0 * degrees, // unavailable
+					argument: 0 * degrees, // unavailable
+					epoch: new Date('January 1 2000 12:00:00 UTC'),
+				},
+				physical: {
+					radius: 5274700,
+				},
+			},
+		],
 	},
 	{
 		name: 'Uranus',

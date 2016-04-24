@@ -1,7 +1,5 @@
 // ported and modified from http://www.stargazing.net/kepler/ellipse.html
-
-const degrees = Math.PI / 180;
-const rotate = -45 * degrees;
+import { rotate } from './config.js';
 
 module.exports = (object, date) => {
 	var period = object.period; // orbital period (d)

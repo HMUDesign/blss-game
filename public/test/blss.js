@@ -95,6 +95,10 @@ var zoom = 1;
 	};
 	
 	BLSS.prototype._onClick = function(coords) {
+		if (!Object.keys(this._objects).length) {
+			return null;
+		}
+		
 		var scale = getScales(this._objects);
 		scale.x.offset = this._objects.sun.latitude;
 		scale.y.offset = this._objects.sun.longitude;

@@ -1,9 +1,7 @@
-import LatLon from './lib/latlon.js';
+import { center } from './mechanics/config.js';
 import objects from './mechanics/objects';
 import mechanics from './mechanics';
 import state from './state';
-
-const center = new LatLon(39.545893, -119.819441);
 
 let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) => {
 	let position = mechanics(orbital, date);
@@ -48,8 +46,7 @@ export default () => {
 	} ]
 		.concat(reduce(date, objects))
 		.map((object) => {
-			delete object.position;
 			return object;
-		});
+		})
 	;
 };
