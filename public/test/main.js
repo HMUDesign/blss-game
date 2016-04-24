@@ -18,11 +18,11 @@ $(document).ready(function() {
 	});
 	
 	$('#attack').on('click', function() {
-		socket.emit('attack', canvas.blss('selected'));
+		socket.emit('attack', { key: canvas.blss('selected') });
 	});
 	
 	$('#reinforce').on('click', function() {
-		socket.emit('reinforce', canvas.blss('selected'));
+		socket.emit('reinforce', { key: canvas.blss('selected') });
 	});
 	
 	$('#draw').on('click', function() {

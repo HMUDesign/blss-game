@@ -25,24 +25,32 @@ export default (server) => {
 			socket.emit('authenticate', player);
 		});
 		
-		socket.on('attack', (key) => {
+		socket.on('attack', ({ key, location }) => {
 			if (!player) {
 				return;
 			}
 			
-			state.attack(player, key);
-			
-			io.emit('state', key, state.get(key));
+			let value = state.attack(player, location, key);
+			if (value === true) {
+				io.emit('state', key, state.get(key));
+			}
+			else {
+				socket.emit('fail', value);
+			}
 		});
 		
-		socket.on('reinforce', (key) => {
+		socket.on('reinforce', ({ key, location }) => {
 			if (!player) {
 				return;
 			}
 			
-			state.reinforce(player, key);
-			
-			io.emit('state', key, state.get(key));
+			let value = state.reinforce(player, location, key);
+			if (value === true) {
+				io.emit('state', key, state.get(key));
+			}
+			else {
+				socket.emit('fail', value);
+			}
 		});
 	});
 };

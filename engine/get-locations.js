@@ -3,7 +3,7 @@ import objects from './mechanics/objects';
 import mechanics from './mechanics';
 import state from './state';
 
-let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) => {
+export let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) => {
 	let cartesian = mechanics(orbital, date);
 	cartesian.x += parent.x;
 	cartesian.y += parent.y;
@@ -20,7 +20,7 @@ let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) =>
 	};
 };
 
-let reduce = (date, objects, parent) => {
+export let reduce = (date, objects, parent) => {
 	return objects.reduce((list, object) => {
 		let result = transform(date, object, parent);
 		
