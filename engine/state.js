@@ -3,12 +3,18 @@ import objects from './mechanics/objects';
 let state = {};
 
 function init() {
-	objects.map(({ key }) => {
+	let clean = ({ key, moons }) => {
 		state[key] = {
 			owner: null,
 			health: 0,
 		};
-	});
+		
+		if (moons) {
+			moons.map(clean);
+		}
+	};
+	
+	clean({ moons: objects });
 }
 
 function get(key) {
