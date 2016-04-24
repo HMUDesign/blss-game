@@ -13,6 +13,10 @@ $(document).ready(function() {
 		socket.emit('locations');
 	});
 	
+	$('#authenticate').on('click', function() {
+		socket.emit('authenticate');
+	});
+	
 	$('#attack').on('click', function() {
 		socket.emit('attack', canvas.blss('selected'));
 	});

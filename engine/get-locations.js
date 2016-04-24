@@ -1,10 +1,11 @@
 import LatLon from './lib/latlon.js';
 import objects from './mechanics/objects';
 import mechanics from './mechanics';
+import state from './state';
 
 const center = new LatLon(39.545893, -119.819441);
 
-let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0 }) => {
+let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0, z: 0 }) => {
 	let position = mechanics(orbital, date);
 	position.x += parent.x;
 	position.y += parent.y;
@@ -18,6 +19,7 @@ let transform = (date, { name, key, orbital }, parent = { x: 0, y: 0 }) => {
 		latitude,
 		longitude,
 		position,
+		state: state.get(key),
 	};
 };
 
@@ -45,14 +47,9 @@ export default () => {
 		longitude: center.toObject().longitude,
 	} ]
 		.concat(reduce(date, objects))
-		.map(({ name, key, latitude, longitude }) => {
-			return {
-				key,
-				name,
-				icon: `/objects/${ key }.png`,
-				latitude,
-				longitude,
-			};
-		})
+		.map((object) => {
+			delete object.position;
+			return object;
+		});
 	;
 };
