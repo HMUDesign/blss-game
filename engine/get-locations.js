@@ -43,6 +43,7 @@ export default () => {
 		name: 'Sun',
 		geographic: center.toObject(),
 		cartesian: { x: 0, y: 0, z: 0 },
+		state: {},
 	} ]
 		.concat(reduce(date, objects))
 	;
