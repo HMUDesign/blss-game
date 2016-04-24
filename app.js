@@ -21,5 +21,5 @@ app.use(koaServeStatic('public', {
 	fallthrough: false,
 }));
 
-const server = app.listen(3000);
+const server = app.listen(process.env.PORT || 3000);
 engine(server);
