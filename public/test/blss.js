@@ -20,6 +20,7 @@ var zoom = 25;
 		this._orbits = {};
 		this._objects = {};
 		this._selected = null;
+		this._center = null;
 	}
 	
 	BLSS.prototype.setOrbit = function(key, orbit) {
@@ -31,7 +32,29 @@ var zoom = 25;
 	BLSS.prototype.setObject = function(key, object) {
 		this._objects[key] = object;
 		
+		if (!this._center) {
+			this._center = key;
+		}
+		
 		return this;
+	};
+	
+	BLSS.prototype.center = function(key) {
+		if (key === true) {
+			key = this.selected();
+		}
+		
+		if (key) {
+			if (!this._objects[key]) {
+				throw new Error('Unknown object: "' + key + '".');
+			}
+			
+			this._center = key;
+			
+			return this.draw();
+		}
+		
+		return this._center;
 	};
 	
 	BLSS.prototype.draw = function() {
@@ -40,8 +63,8 @@ var zoom = 25;
 		}
 		
 		var scale = getScales(this._objects);
-		scale.x.offset = this._objects.sun.geographic.latitude;
-		scale.y.offset = this._objects.sun.geographic.longitude;
+		scale.x.offset = this._objects[this._center].geographic.latitude;
+		scale.y.offset = this._objects[this._center].geographic.longitude;
 		
 		var width  = this._context.canvas.width;
 		var height = this._context.canvas.height;
@@ -128,8 +151,8 @@ var zoom = 25;
 		}
 		
 		var scale = getScales(this._objects);
-		scale.x.offset = this._objects.sun.geographic.latitude;
-		scale.y.offset = this._objects.sun.geographic.longitude;
+		scale.x.offset = this._objects[this._center].geographic.latitude;
+		scale.y.offset = this._objects[this._center].geographic.longitude;
 		
 		var width  = this._context.canvas.width;
 		var height = this._context.canvas.height;

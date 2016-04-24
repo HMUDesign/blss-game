@@ -5,6 +5,17 @@ $(document).ready(function() {
 	
 	var canvas = $('#blss').blss();
 	
+	$(window).on('resize', function() {
+		var width = $(this).width();
+		var height = $(this).height();
+		
+		var data = canvas.data('blss');
+		data._context.canvas.width = width;
+		data._context.canvas.height = height;
+		
+		return canvas.blss('draw');
+	}).trigger('resize');
+	
 	$('#getOrbits').on('click', function() {
 		socket.emit('orbits');
 	});
@@ -25,8 +36,8 @@ $(document).ready(function() {
 		socket.emit('reinforce', { key: canvas.blss('selected') });
 	});
 	
-	$('#draw').on('click', function() {
-		canvas.blss('draw');
+	$('#center').on('click', function() {
+		canvas.blss('center', true);
 	});
 	
 	socket.on('orbits', function(orbits) {
